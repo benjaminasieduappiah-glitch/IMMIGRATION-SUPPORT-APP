@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ghana Immigration Support Services</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-around;
+      background: #f8f9fa;
+      padding: 15px;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .nav button {
+      background: none;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+      color: #495057;
+      border-radius: 6px;
+      transition: all 0.3s;
+    }
+
+    .nav button:hover, .nav button.active {
+      background: #667eea;
+      color: white;
+    }
+
+    .content {
+      padding: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #5568d3;
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+      margin-left: 10px;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+
+    .card {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid #dee2e6;
+    }
+
+    .card h3 {
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .service-card {
+      background: white;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .service-card:hover {
+      border-color: #667eea;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .service-card.selected {
+      border-color: #667eea;
+      background: #f0f4ff;
+    }
+
+    .price {
+      font-size: 24px;
+      font-weight: bold;
+      color: #667eea;
+      margin: 10px 0;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge-pending {
+      background: #ffc107;
+      color: #000;
+    }
+
+    .badge-processing {
+      background: #17a2b8;
+      color: white;
+    }
+
+    .badge-approved {
+      background: #28a745;
+      color: white;
+    }
+
+    .badge-rejected {
+      background: #dc3545;
+      color: white;
+    }
+
+    .alert {
+      padding: 12px 20px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+
+    .alert-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .alert-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table th,
+    table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    table th {
+      background: #f8f9fa;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .logout-btn {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .logout-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .service-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      table {
+        font-size: 12px;
+      }
+
+      .header h1 {
+        font-size: 22px;
+      }
+
+      .logout-btn {
+        position: static;
+        display: block;
+        margin: 10px auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const API_URL = window.location.hostname === 'localhost' 
+      ? 'http://localhost:5000/api' 
+      : '/api';
+
+    function App() {
+      const [user, setUser] = useState(null);
+      const [token, setToken] = useState(localStorage.getItem('token'));
+      const [currentView, setCurrentView] = useState('login');
+      const [categories, setCategories] = useState([]);
+      const [serviceOptions, setServiceOptions] = useState([]);
+      const [requests, setRequests] = useState([]);
+      const [message, setMessage] = useState({ type: '', text: '' });
+
+      useEffect(() => {
+        if (token) {
+          fetchCategories();
+          fetchServiceOptions();
+          fetchRequests();
+        }
+      }, [token]);
+
+      const fetchCategories = async () => {
+        try {
+          const response = await fetch(`${API_URL}/categories`);
+          const data = await response.json();
+          setCategories(data);
+        } catch (error) {
+          console.error('Error fetching categories:', error);
+        }
+      };
+
+      const fetchServiceOptions = async () => {
+        try {
+          const response = await fetch(`${API_URL}/service-options`);
+          const data = await response.json();
+          setServiceOptions(data);
+        } catch (error) {
+          console.error('Error fetching service options:', error);
+        }
+      };
+
+      const fetchRequests = async () => {
+        try {
+          const response = await fetch(`${API_URL}/requests`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          const data = await response.json();
+          setRequests(data);
+        } catch (error) {
+          console.error('Error fetching requests:', error);
+        }
+      };
+
+      const handleLogin = async (email, password) => {
+        try {
+          const response = await fetch(`${API_URL}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            setToken(data.token);
+            setUser(data.user);
+            localStorage.setItem('token', data.token);
+            setMessage({ type: 'success', text: 'Login successful!' });
+            setCurrentView('services');
+          } else {
+            setMessage({ type: 'error', text: data.error });
+          }
+        } catch (error) {
+          setMessage({ type: 'error', text: 'Login failed. Please try again.' });
+        }
+      };
+
+      const handleRegister = async (email, password, full_name, phone) => {
+        try {
+          const response = await fetch(`${API_URL}/auth/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password, full_name, phone })
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            setToken(data.token);
+            setUser(data.user);
+            localStorage.setItem('token', data.token);
+            setMessage({ type: 'success', text: 'Registration successful!' });
+            setCurrentView('services');
+          } else {
+            setMessage({ type: 'error', text: data.error });
+          }
+        } catch (error) {
+          setMessage({ type: 'error', text: 'Registration failed. Please try again.' });
+        }
+      };
+
+      const handleLogout = () => {
+        setToken(null);
+        setUser(null);
+        localStorage.removeItem('token');
+        setCurrentView('login');
+        setMessage({ type: '', text: '' });
+      };
+
+      const handleSubmitRequest = async (requestData) => {
+        try {
+          const response = await fetch(`${API_URL}/requests`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(requestData)
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            setMessage({ type: 'success', text: `Request submitted successfully! Total: $${data.total_amount}` });
+            fetchRequests();
+            setCurrentView('my-requests');
+          } else {
+            setMessage({ type: 'error', text: data.error });
+          }
+        } catch (error) {
+          setMessage({ type: 'error', text: 'Failed to submit request. Please try again.' });
+        }
+      };
+
+      if (!token) {
+        return <AuthView onLogin={handleLogin} onRegister={handleRegister} message={message} />;
+      }
+
+      return (
+        <div className="container">
+          <div className="header" style={{ position: 'relative' }}>
+            <button className="logout-btn" onClick={handleLogout}>Logout</button>
+            <h1>🇬🇭 Ghana Immigration Support Services</h1>
+            <p>Welcome, {user?.full_name || 'User'}! Your trusted partner for visa and immigration services</p>
+          </div>
+
+          <div className="nav">
+            <button 
+              className={currentView === 'services' ? 'active' : ''} 
+              onClick={() => setCurrentView('services')}
+            >
+              Apply for Services
+            </button>
+            <button 
+              className={currentView === 'my-requests' ? 'active' : ''} 
+              onClick={() => setCurrentView('my-requests')}
+            >
+              My Requests
+            </button>
+            <button 
+              className={currentView === 'pricing' ? 'active' : ''} 
+              onClick={() => setCurrentView('pricing')}
+            >
+              Pricing
+            </button>
+          </div>
+
+          <div className="content">
+            {message.text && (
+              <div className={`alert alert-${message.type === 'success' ? 'success' : 'error'}`}>
+                {message.text}
+              </div>
+            )}
+
+            {currentView === 'services' && (
+              <ServicesView 
+                categories={categories}
+                serviceOptions={serviceOptions}
+                onSubmit={handleSubmitRequest}
+              />
+            )}
+
+            {currentView === 'my-requests' && (
+              <RequestsView requests={requests} />
+            )}
+
+            {currentView === 'pricing' && (
+              <PricingView serviceOptions={serviceOptions} />
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    function AuthView({ onLogin, onRegister, message }) {
+      const [isLogin, setIsLogin] = useState(true);
+      const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+        full_name: '',
+        phone: ''
+      });
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        if (isLogin) {
+          onLogin(formData.email, formData.password);
+        } else {
+          onRegister(formData.email, formData.password, formData.full_name, formData.phone);
+        }
+      };
+
+      return (
+        <div className="container" style={{ maxWidth: '500px', marginTop: '50px' }}>
+          <div className="header">
+            <h1>🇬🇭 Ghana Immigration Services</h1>
+            <p>Secure, Fast, Reliable</p>
+          </div>
+
+          <div className="content">
+            {message.text && (
+              <div className={`alert alert-${message.type === 'success' ? 'success' : 'error'}`}>
+                {message.text}
+              </div>
+            )}
+
+            <h2 style={{ marginBottom: '20px', textAlign: 'center' }}>
+              {isLogin ? 'Login' : 'Register'}
+            </h2>
+
+            <form onSubmit={handleSubmit}>
+              {!isLogin && (
+                <>
+                  <div className="form-group">
+                    <label>Full Name</label>
+                    <input
+                      type="text"
+                      value={formData.full_name}
+                      onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Phone</label>
+                    <input
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    />
+                  </div>
+                </>
+              )}
+
+              <div className="form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Password</label>
+                <input
+                  type="password"
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  required
+                />
+              </div>
+
+              <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
+                {isLogin ? 'Login' : 'Register'}
+              </button>
+
+              <p style={{ textAlign: 'center', marginTop: '20px' }}>
+                {isLogin ? "Don't have an account? " : "Already have an account? "}
+                <a 
+                  href="#" 
+                  onClick={(e) => { e.preventDefault(); setIsLogin(!isLogin); }}
+                  style={{ color: '#667eea', textDecoration: 'none' }}
+                >
+                  {isLogin ? 'Register' : 'Login'}
+                </a>
+              </p>
+            </form>
+          </div>
+        </div>
+      );
+    }
+
+    function ServicesView({ categories, serviceOptions, onSubmit }) {
+      const [selectedCategory, setSelectedCategory] = useState(null);
+      const [selectedOption, setSelectedOption] = useState(null);
+      const [formData, setFormData] = useState({
+        applicant_name: '',
+        passport_number: '',
+        nationality: '',
+        travel_date: ''
+      });
+
+      const categoryOptions = serviceOptions.filter(
+        opt => selectedCategory && opt.category_id === selectedCategory.id
+      );
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!selectedOption) {
+          alert('Please select a service option');
+          return;
+        }
+
+        onSubmit({
+          category_id: selectedCategory.id,
+          service_option_id: selectedOption.id,
+          ...formData
+        });
+      };
+
+      return (
+        <div>
+          <h2>Apply for Immigration Services</h2>
+
+          <div className="card">
+            <h3>Step 1: Select Service Category</h3>
+            <div className="service-grid">
+              {categories.map(cat => (
+                <div
+                  key={cat.id}
+                  className={`service-card ${selectedCategory?.id === cat.id ? 'selected' : ''}`}
+                  onClick={() => {
+                    setSelectedCategory(cat);
+                    setSelectedOption(null);
+                  }}
+                >
+                  <h4>{cat.name}</h4>
+                  <p style={{ fontSize: '14px', color: '#666', marginTop: '10px' }}>
+                    {cat.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {selectedCategory && categoryOptions.length > 0 && (
+            <div className="card">
+              <h3>Step 2: Select Service Option</h3>
+              <div className="service-grid">
+                {categoryOptions.map(opt => (
+                  <div
+                    key={opt.id}
+                    className={`service-card ${selectedOption?.id === opt.id ? 'selected' : ''}`}
+                    onClick={() => setSelectedOption(opt)}
+                  >
+                    <h4>{opt.option_name}</h4>
+                    <div className="price">${opt.base_price}</div>
+                    <p style={{ fontSize: '14px', color: '#666' }}>{opt.description}</p>
+                    <p style={{ fontSize: '12px', color: '#667eea', marginTop: '10px' }}>
+                      ⏱️ {opt.processing_time}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {selectedOption && (
+            <div className="card">
+              <h3>Step 3: Applicant Information</h3>
+              <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                  <label>Applicant Full Name *</label>
+                  <input
+                    type="text"
+                    value={formData.applicant_name}
+                    onChange={(e) => setFormData({ ...formData, applicant_name: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Passport Number *</label>
+                  <input
+                    type="text"
+                    value={formData.passport_number}
+                    onChange={(e) => setFormData({ ...formData, passport_number: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Nationality *</label>
+                  <input
+                    type="text"
+                    value={formData.nationality}
+                    onChange={(e) => setFormData({ ...formData, nationality: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Travel Date (if applicable)</label>
+                  <input
+                    type="date"
+                    value={formData.travel_date}
+                    onChange={(e) => setFormData({ ...formData, travel_date: e.target.value })}
+                  />
+                </div>
+
+                <div style={{ background: '#f8f9fa', padding: '15px', borderRadius: '6px', marginBottom: '20px' }}>
+                  <h4>Summary</h4>
+                  <p><strong>Service:</strong> {selectedCategory.name} - {selectedOption.option_name}</p>
+                  <p><strong>Processing Time:</strong> {selectedOption.processing_time}</p>
+                  <p><strong>Total Amount:</strong> <span style={{ fontSize: '20px', color: '#667eea' }}>${selectedOption.base_price}</span></p>
+                </div>
+
+                <button type="submit" className="btn btn-primary">Submit Application</button>
+              </form>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    function RequestsView({ requests }) {
+      return (
+        <div>
+          <h2>My Visa Requests</h2>
+
+          {requests.length === 0 ? (
+            <div className="card">
+              <p>You haven't submitted any requests yet.</p>
+            </div>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Service</th>
+                  <th>Applicant</th>
+                  <th>Passport</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {requests.map(req => (
+                  <tr key={req.id}>
+                    <td>{req.id}</td>
+                    <td>
+                      <strong>{req.category_name}</strong><br />
+                      <small>{req.option_name}</small>
+                    </td>
+                    <td>{req.applicant_name}</td>
+                    <td>{req.passport_number}</td>
+                    <td>${req.total_amount}</td>
+                    <td>
+                      <span className={`badge badge-${req.status}`}>
+                        {req.status.toUpperCase()}
+                      </span>
+                    </td>
+                    <td>{new Date(req.created_at).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      );
+    }
+
+    function PricingView({ serviceOptions }) {
+      const groupedOptions = {};
+      serviceOptions.forEach(opt => {
+        if (!groupedOptions[opt.category_name]) {
+          groupedOptions[opt.category_name] = [];
+        }
+        groupedOptions[opt.category_name].push(opt);
+      });
+
+      return (
+        <div>
+          <h2>Service Pricing</h2>
+          <p style={{ marginBottom: '20px', color: '#666' }}>
+            All prices are in USD and may be subject to change
+          </p>
+
+          {Object.keys(groupedOptions).map(categoryName => (
+            <div key={categoryName} className="card">
+              <h3>{categoryName}</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Service Option</th>
+                    <th>Description</th>
+                    <th>Processing Time</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {groupedOptions[categoryName].map(opt => (
+                    <tr key={opt.id}>
+                      <td><strong>{opt.option_name}</strong></td>
+                      <td>{opt.description}</td>
+                      <td>{opt.processing_time}</td>
+                      <td><strong style={{ color: '#667eea' }}>${opt.base_price}</strong></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>

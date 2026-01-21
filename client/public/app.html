@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ghana Immigration Support Services</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+      position: relative;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-around;
+      background: #f8f9fa;
+      padding: 15px;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .nav button {
+      background: none;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+      color: #495057;
+      border-radius: 6px;
+      transition: all 0.3s;
+    }
+
+    .nav button:hover, .nav button.active {
+      background: #667eea;
+      color: white;
+    }
+
+    .content {
+      padding: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #5568d3;
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+      margin-left: 10px;
+    }
+
+    .card {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid #dee2e6;
+    }
+
+    .card h3 {
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .service-card {
+      background: white;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .service-card:hover {
+      border-color: #667eea;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .service-card.selected {
+      border-color: #667eea;
+      background: #f0f4ff;
+    }
+
+    .price {
+      font-size: 24px;
+      font-weight: bold;
+      color: #667eea;
+      margin: 10px 0;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge-pending {
+      background: #ffc107;
+      color: #000;
+    }
+
+    .badge-approved {
+      background: #28a745;
+      color: white;
+    }
+
+    .alert {
+      padding: 12px 20px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+
+    .alert-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .alert-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table th,
+    table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    table th {
+      background: #f8f9fa;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .logout-btn {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .logout-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .service-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      table {
+        font-size: 12px;
+      }
+
+      .header h1 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Login/Register View -->
+  <div id="auth-view" class="container" style="max-width: 500px; margin-top: 50px;">
+    <div class="header">
+      <h1>🇬🇭 Ghana Immigration Services</h1>
+      <p>Secure, Fast, Reliable</p>
+    </div>
+    <div class="content">
+      <div id="auth-message"></div>
+      <h2 id="auth-title" style="margin-bottom: 20px; text-align: center;">Login</h2>
+      <form id="auth-form">
+        <div id="register-fields" class="hidden">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="full_name" />
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" id="phone" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="email" required />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="password" required />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+        <p style="text-align: center; margin-top: 20px;">
+          <span id="toggle-text">Don't have an account? </span>
+          <a href="#" id="toggle-auth" style="color: #667eea; text-decoration: none;">Register</a>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main App View -->
+  <div id="app-view" class="container hidden">
+    <div class="header">
+      <button class="logout-btn" onclick="logout()">Logout</button>
+      <h1>🇬🇭 Ghana Immigration Support Services</h1>
+      <p id="welcome-text">Welcome! Your trusted partner for visa and immigration services</p>
+    </div>
+
+    <div class="nav">
+      <button onclick="showView('services')" id="nav-services">Apply for Services</button>
+      <button onclick="showView('requests')" id="nav-requests">My Requests</button>
+      <button onclick="showView('pricing')" id="nav-pricing">Pricing</button>
+    </div>
+
+    <div class="content">
+      <div id="app-message"></div>
+
+      <!-- Services View -->
+      <div id="services-view" class="view-content">
+        <h2>Apply for Immigration Services</h2>
+        
+        <div class="card">
+          <h3>Step 1: Select Service Category</h3>
+          <div class="service-grid" id="categories-grid"></div>
+        </div>
+
+        <div class="card hidden" id="options-card">
+          <h3>Step 2: Select Service Option</h3>
+          <div class="service-grid" id="options-grid"></div>
+        </div>
+
+        <div class="card hidden" id="application-card">
+          <h3>Step 3: Applicant Information</h3>
+          <form id="application-form">
+            <div class="form-group">
+              <label>Applicant Full Name *</label>
+              <input type="text" id="applicant_name" required />
+            </div>
+            <div class="form-group">
+              <label>Passport Number *</label>
+              <input type="text" id="passport_number" required />
+            </div>
+            <div class="form-group">
+              <label>Nationality *</label>
+              <input type="text" id="nationality" required />
+            </div>
+            <div class="form-group">
+              <label>Travel Date (if applicable)</label>
+              <input type="date" id="travel_date" />
+            </div>
+            <div id="summary" style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px;"></div>
+            <button type="submit" class="btn btn-primary">Submit Application</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Requests View -->
+      <div id="requests-view" class="view-content hidden">
+        <h2>My Visa Requests</h2>
+        <div id="requests-content"></div>
+      </div>
+
+      <!-- Pricing View -->
+      <div id="pricing-view" class="view-content hidden">
+        <h2>Service Pricing</h2>
+        <p style="margin-bottom: 20px; color: #666;">All prices are in USD and may be subject to change</p>
+        <div id="pricing-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = '/api';
+    let token = localStorage.getItem('token');
+    let currentUser = null;
+    let categories = [];
+    let serviceOptions = [];
+    let selectedCategory = null;
+    let selectedOption = null;
+
+    // Initialize app
+    if (token) {
+      loadApp();
+    }
+
+    // Auth form handling
+    const authForm = document.getElementById('auth-form');
+    const toggleAuth = document.getElementById('toggle-auth');
+    let isLogin = true;
+
+    toggleAuth.onclick = (e) => {
+      e.preventDefault();
+      isLogin = !isLogin;
+      document.getElementById('auth-title').textContent = isLogin ? 'Login' : 'Register';
+      document.getElementById('register-fields').classList.toggle('hidden', isLogin);
+      document.getElementById('toggle-text').textContent = isLogin ? "Don't have an account? " : "Already have an account? ";
+      toggleAuth.textContent = isLogin ? 'Register' : 'Login';
+      authForm.querySelector('button[type="submit"]').textContent = isLogin ? 'Login' : 'Register';
+    };
+
+    authForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      const endpoint = isLogin ? '/auth/login' : '/auth/register';
+      const body = isLogin 
+        ? { email, password }
+        : {
+            email,
+            password,
+            full_name: document.getElementById('full_name').value,
+            phone: document.getElementById('phone').value
+          };
+
+      try {
+        const response = await fetch(API_URL + endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          token = data.token;
+          currentUser = data.user;
+          localStorage.setItem('token', token);
+          showMessage('auth-message', 'success', isLogin ? 'Login successful!' : 'Registration successful!');
+          setTimeout(() => loadApp(), 500);
+        } else {
+          showMessage('auth-message', 'error', data.error);
+        }
+      } catch (error) {
+        showMessage('auth-message', 'error', 'Connection failed. Please try again.');
+      }
+    };
+
+    function showMessage(elementId, type, text) {
+      const messageEl = document.getElementById(elementId);
+      messageEl.innerHTML = `<div class="alert alert-${type === 'success' ? 'success' : 'error'}">${text}</div>`;
+      setTimeout(() => messageEl.innerHTML = '', 5000);
+    }
+
+    async function loadApp() {
+      document.getElementById('auth-view').classList.add('hidden');
+      document.getElementById('app-view').classList.remove('hidden');
+      
+      await fetchCategories();
+      await fetchServiceOptions();
+      showView('services');
+    }
+
+    function logout() {
+      token = null;
+      currentUser = null;
+      localStorage.removeItem('token');
+      document.getElementById('auth-view').classList.remove('hidden');
+      document.getElementById('app-view').classList.add('hidden');
+      document.getElementById('email').value = '';
+      document.getElementById('password').value = '';
+    }
+
+    async function fetchCategories() {
+      const response = await fetch(API_URL + '/categories');
+      categories = await response.json();
+      renderCategories();
+    }
+
+    async function fetchServiceOptions() {
+      const response = await fetch(API_URL + '/service-options');
+      serviceOptions = await response.json();
+      renderPricing();
+    }
+
+    function renderCategories() {
+      const grid = document.getElementById('categories-grid');
+      grid.innerHTML = categories.map(cat => `
+        <div class="service-card" onclick="selectCategory(${cat.id})">
+          <h4>${cat.name}</h4>
+          <p style="font-size: 14px; color: #666; margin-top: 10px;">${cat.description}</p>
+        </div>
+      `).join('');
+    }
+
+    function selectCategory(categoryId) {
+      selectedCategory = categories.find(c => c.id === categoryId);
+      selectedOption = null;
+      
+      document.querySelectorAll('#categories-grid .service-card').forEach((card, idx) => {
+        card.classList.toggle('selected', categories[idx].id === categoryId);
+      });
+
+      const options = serviceOptions.filter(o => o.category_id === categoryId);
+      const optionsGrid = document.getElementById('options-grid');
+      optionsGrid.innerHTML = options.map(opt => `
+        <div class="service-card" onclick="selectOption(${opt.id})">
+          <h4>${opt.option_name}</h4>
+          <div class="price">$${opt.base_price}</div>
+          <p style="font-size: 14px; color: #666;">${opt.description}</p>
+          <p style="font-size: 12px; color: #667eea; margin-top: 10px;">⏱️ ${opt.processing_time}</p>
+        </div>
+      `).join('');
+
+      document.getElementById('options-card').classList.remove('hidden');
+      document.getElementById('application-card').classList.add('hidden');
+    }
+
+    function selectOption(optionId) {
+      selectedOption = serviceOptions.find(o => o.id === optionId);
+      
+      document.querySelectorAll('#options-grid .service-card').forEach(card => {
+        card.classList.remove('selected');
+      });
+      event.currentTarget.classList.add('selected');
+
+      document.getElementById('summary').innerHTML = `
+        <h4>Summary</h4>
+        <p><strong>Service:</strong> ${selectedCategory.name} - ${selectedOption.option_name}</p>
+        <p><strong>Processing Time:</strong> ${selectedOption.processing_time}</p>
+        <p><strong>Total Amount:</strong> <span style="font-size: 20px; color: #667eea;">$${selectedOption.base_price}</span></p>
+      `;
+
+      document.getElementById('application-card').classList.remove('hidden');
+    }
+
+    document.getElementById('application-form').onsubmit = async (e) => {
+      e.preventDefault();
+      
+      const requestData = {
+        category_id: selectedCategory.id,
+        service_option_id: selectedOption.id,
+        applicant_name: document.getElementById('applicant_name').value,
+        passport_number: document.getElementById('passport_number').value,
+        nationality: document.getElementById('nationality').value,
+        travel_date: document.getElementById('travel_date').value
+      };
+
+      try {
+        const response = await fetch(API_URL + '/requests', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify(requestData)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          showMessage('app-message', 'success', `Request submitted successfully! Total: $${data.total_amount}`);
+          document.getElementById('application-form').reset();
+          setTimeout(() => showView('requests'), 1500);
+        } else {
+          showMessage('app-message', 'error', data.error);
+        }
+      } catch (error) {
+        showMessage('app-message', 'error', 'Failed to submit request. Please try again.');
+      }
+    };
+
+    async function showView(view) {
+      document.querySelectorAll('.view-content').forEach(v => v.classList.add('hidden'));
+      document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+
+      document.getElementById(view + '-view').classList.remove('hidden');
+      document.getElementById('nav-' + view).classList.add('active');
+
+      if (view === 'requests') {
+        await loadRequests();
+      }
+    }
+
+    async function loadRequests() {
+      const response = await fetch(API_URL + '/requests', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      const requests = await response.json();
+
+      const content = document.getElementById('requests-content');
+      
+      if (requests.length === 0) {
+        content.innerHTML = '<div class="card"><p>You haven\'t submitted any requests yet.</p></div>';
+      } else {
+        content.innerHTML = `
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Service</th>
+                <th>Applicant</th>
+                <th>Passport</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${requests.map(req => `
+                <tr>
+                  <td>${req.id}</td>
+                  <td><strong>${req.category_name}</strong><br><small>${req.option_name}</small></td>
+                  <td>${req.applicant_name}</td>
+                  <td>${req.passport_number}</td>
+                  <td>$${req.total_amount}</td>
+                  <td><span class="badge badge-${req.status}">${req.status.toUpperCase()}</span></td>
+                  <td>${new Date(req.created_at).toLocaleDateString()}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      }
+    }
+
+    function renderPricing() {
+      const grouped = {};
+      serviceOptions.forEach(opt => {
+        if (!grouped[opt.category_name]) {
+          grouped[opt.category_name] = [];
+        }
+        grouped[opt.category_name].push(opt);
+      });
+
+      const content = document.getElementById('pricing-content');
+      content.innerHTML = Object.keys(grouped).map(catName => `
+        <div class="card">
+          <h3>${catName}</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Service Option</th>
+                <th>Description</th>
+                <th>Processing Time</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${grouped[catName].map(opt => `
+                <tr>
+                  <td><strong>${opt.option_name}</strong></td>
+                  <td>${opt.description}</td>
+                  <td>${opt.processing_time}</td>
+                  <td><strong style="color: #667eea;">$${opt.base_price}</strong></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `).join('');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Database
+*.db
+server/immigration.db
+
+# Environment variables
+.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+dist/
+build/
