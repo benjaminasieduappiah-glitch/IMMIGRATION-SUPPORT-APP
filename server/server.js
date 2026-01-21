@@ -9,7 +9,12 @@ const db = require('./database');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+  console.error('FATAL ERROR: JWT_SECRET is not defined in environment variables.');
+  process.exit(1);
+}
 
 // Middleware
 app.use(cors());
@@ -155,6 +160,7 @@ app.get('/api/service-options', (req, res) => {
 });
 
 // Update service option pricing (admin function)
+// TODO: Add role-based access control to restrict this to admin users only
 app.put('/api/service-options/:optionId', authenticateToken, (req, res) => {
   const { optionId } = req.params;
   const { base_price, option_name, description, processing_time } = req.body;
