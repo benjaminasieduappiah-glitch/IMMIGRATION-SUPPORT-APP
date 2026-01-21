@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 const db = require('./database');
@@ -16,10 +17,24 @@ if (!JWT_SECRET) {
   process.exit(1);
 }
 
+// Rate limiting configuration
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // Limit each IP to 5 requests per windowMs
+  message: 'Too many authentication attempts, please try again later.'
+});
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: 'Too many requests, please try again later.'
+});
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('client/public'));
+app.use('/api/', apiLimiter); // Apply rate limiting to all API routes
 
 // Serve the main app on root
 app.get('/', (req, res) => {
@@ -47,7 +62,7 @@ const authenticateToken = (req, res, next) => {
 // Routes
 
 // User registration
-app.post('/api/auth/register', async (req, res) => {
+app.post('/api/auth/register', authLimiter, async (req, res) => {
   const { email, password, full_name, phone } = req.body;
 
   if (!email || !password || !full_name) {
@@ -82,7 +97,7 @@ app.post('/api/auth/register', async (req, res) => {
 });
 
 // User login
-app.post('/api/auth/login', (req, res) => {
+app.post('/api/auth/login', authLimiter, (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
